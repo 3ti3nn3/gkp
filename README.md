@@ -1,6 +1,6 @@
 python files
 ------------
-optimization.py: class for doing the optimization scheme \n
+optimization.py: class for doing the optimization scheme
 evaluation.py: functions for reconstruction and plotting results based on circuit gates and its parameters
 
 notebooks
