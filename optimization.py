@@ -8,12 +8,7 @@ import os
 
 
 # set hyperparametsr 
-sf.hbar = 1 # Setting convention for hba
-circuit_dict = {
-    'kerr': np.array([sf.ops.Xgate, sf.ops.Zgate, sf.ops.Kgate, sf.ops.Sgate]), 
-    'cubic': np.array([sf.ops.Xgate, sf.ops.Zgate, sf.ops.Vgate, sf.ops.Sgate]), 
-    'cubicTanh': np.array([sf.ops.Xgate, sf.ops.Zgate, lambda x: sf.ops.Vgate(np.tanh(x)), sf.ops.Sgate])
-}
+sf.hbar = 1 # Setting convention for hbar
 backend = "fock"
 
 
@@ -67,10 +62,6 @@ class Optimization:
                 saved_dict = pickle.load(file)
             self.__dict__.update(saved_dict)
 
-            # Compatibality with older code versions
-            if self.gates == None: 
-                self.gates = gates_dict[self.cicuit]
-
         # cause error
         else: 
             raise ValueError(f'"{file_name}" is an invalid file name!')
@@ -104,6 +95,36 @@ class Optimization:
     # access gates 
     def get_gates(self):
         return self.gates
+
+
+    # access cutoff 
+    def get_cutoff(self):
+        return self.cutoff 
+
+
+    # access delta
+    def get_delta(self):
+        return self.delta
+
+
+    # acess epsilon 
+    def get_epsilon(self):
+        return self.epsilon
+
+
+    # access num_trials
+    def get_num_trials(self):
+        return self.num_trials
+
+
+    # access state
+    def get_state(self):
+        return self.state
+
+
+    # access num_blocks
+    def get_num_blocks(self):
+        return self.num_blocks
 
 
     # save the whole class
@@ -141,8 +162,8 @@ class Optimization:
             sf.ops.GKP(epsilon=self.epsilon, state=self.state) | q 
 
             for i in range(len(params)//len(self.gates)):
-                for j in range(len(self.gates)): 
-                    self.gates[j](params[i*len(self.gates)+j]) | q
+                for k in range(len(self.gates)): 
+                    self.gates[k](params[i*len(self.gates)+k]) | q
 
         # Initialize engine, selecting Fock backend (cutoff is hyperparameter of the file)
         eng = sf.Engine(backend, backend_options={"cutoff_dim": self.cutoff}) 

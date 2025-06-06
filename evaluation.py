@@ -30,19 +30,19 @@ def prepare_GKP(epsilon, cutoff, state):
 	return eng.run(progTarget, shots=1).state
 
 
-def prepare_state(rev_gates, rev_params, cutoff):
+def prepare_state(gates, params, cutoff):
 	'''
 	Frontend funcion 
 
 	Parameters
-		- rev_gates (array: sf.ops): an array of gates from the strawberry operations library 
-		- rev_params (array): an array of real numbers representing the parameters for the gates of the circuit
+		- gates (array: sf.ops): an array of gates from the strawberry operations library 
+		- params (array): an array of real numbers representing the parameters for the gates of the circuit
 		- cutoff (integer): integer to describe the truncation of the Fock space
 	Returns
 		- BaseFockState: the output quantum state in the Fock basis
 	'''
 	# Check input 
-	if int(len(rev_params)%len(rev_gates)) != 0: 
+	if int(len(params)%len(gates)) != 0: 
 			raise ValueError("Params and gates don't match.")
 
 	# Initialize Strawberry Fields program
@@ -51,9 +51,9 @@ def prepare_state(rev_gates, rev_params, cutoff):
 	with progParamState.context as q: 
 		sf.ops.Vacuum() | q # Initialize vacuum
 
-		for i in range(len(rev_params)//len(rev_gates)):
-			for j in range(len(rev_gates)): 
-				rev_gates[j](-rev_params[i*len(rev_gates)+j]) | q 
+		for i in range(len(params)//len(gates)):
+			for j in range(len(gates)): 
+				gates[j](params[i*len(gates)+j]) | q 
 
 	# Initialize engine, selecting Fock backend
 	eng = sf.Engine(backend, backend_options={"cutoff_dim": cutoff})
