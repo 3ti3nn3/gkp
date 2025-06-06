@@ -10,3 +10,7 @@ discussion.ipynb: insights and discussion of previous ansätze
 distribution.ipynb: analysis of how initial gaussian errors propagate through a polynomial 
 quadrature.ipynb: algebraic implementation to express the preparation circuit as polynomial of the initial quadratures
 reinsert.ipynb: implementation of the reinsertion using the approximation of a cubic phase gate via the driven Kerr gate
+
+remarks
+-------
+some notebooks and files require own implementation of certain gates in the strawberryfields framework
